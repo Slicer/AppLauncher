@@ -4,9 +4,7 @@
 // Qt includes
 #include <QHash>
 #include <QString>
-
-class QSettings;
-class QStringList;
+#include <Qsettings>
 
 namespace ctk {
 
