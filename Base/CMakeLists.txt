@@ -25,7 +25,7 @@ set(KIT_SRCS
   )
 
 # Headers that should run through moc
-set(KIT_MOC_SRCS
+set(KIT_MOC_SRCS_CTKAppLauncherLib
   ctkAppLauncherEnvironment.h
   ctkAppLauncherSettings.h
   ctkAppLauncherSettings_p.h
@@ -45,7 +45,7 @@ ctkMacroBuildLib(
   INCLUDE_DIRECTORIES ${KIT_include_directories}
   INSTALL_INCLUDE_DIRECTORIES "${CTK_INSTALL_INCLUDE_DIR}"
   SRCS ${KIT_SRCS}
-  MOC_SRCS ${KIT_MOC_SRCS}
+  MOC_SRCS ${KIT_MOC_SRCS_CTKAppLauncherLib}
   TARGET_LIBRARIES ${KIT_target_libraries}
   RESOURCES ${KIT_resources}
   LIBRARY_TYPE "STATIC"
@@ -76,11 +76,9 @@ set(KIT_SRCS
   )
 
 # Headers that should run through moc
-set(KIT_MOC_SRCS
+set(KIT_MOC_SRCS_LauncherBase
   ctkAppLauncher.h
   ctkAppLauncher_p.h
-  ctkAppLauncherSettings.h
-  ctkAppLauncherSettings_p.h
   )
 
 # Resources
@@ -99,7 +97,7 @@ ctkMacroBuildLib(
   INCLUDE_DIRECTORIES ${KIT_include_directories}
   INSTALL_INCLUDE_DIRECTORIES "${CTK_INSTALL_INCLUDE_DIR}"
   SRCS ${KIT_SRCS}
-  MOC_SRCS ${KIT_MOC_SRCS}
+  MOC_SRCS ${KIT_MOC_SRCS_LauncherBase}
   TARGET_LIBRARIES ${KIT_target_libraries}
   RESOURCES ${KIT_resources}
   LIBRARY_TYPE "STATIC"
