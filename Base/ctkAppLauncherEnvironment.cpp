@@ -20,11 +20,11 @@ protected:
 public:
   ctkAppLauncherEnvironmentPrivate(ctkAppLauncherEnvironment& object);
 
-  static QRegExp LevelVarNameRegex;
+  static QRegularExpression LevelVarNameRegex;
 };
 
 // --------------------------------------------------------------------------
-QRegExp ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex = QRegExp("^APPLAUNCHER\\_(\\d+)\\_");
+QRegularExpression ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex = QRegularExpression("^APPLAUNCHER\\_(\\d+)\\_");
 
 // --------------------------------------------------------------------------
 ctkAppLauncherEnvironmentPrivate::ctkAppLauncherEnvironmentPrivate(ctkAppLauncherEnvironment& object)
@@ -215,7 +215,7 @@ bool ctkAppLauncherEnvironment::isReservedVariableName(const QString& varname)
 // --------------------------------------------------------------------------
 QString ctkAppLauncherEnvironment::casedVariableName(const QStringList& names, const QString& variableName)
 {
-  QRegExp rx(variableName, Qt::CaseInsensitive);
+  QRegularExpression rx(variableName, Qt::CaseInsensitive);
   int index = names.indexOf(rx);
   if (index >= 0)
     {

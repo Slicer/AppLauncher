@@ -314,7 +314,7 @@ QString ctkAppLauncherSettingsPrivate::expandValue(const QString& value) const
   QHash<QString, QString> mapOfEnvVars = this->MapOfExpandedEnvVars;
 
   // Consider environment expression
-  QRegExp regex("\\<env\\:([a-zA-Z0-9\\-\\_]+)\\>");
+  QRegularExpression regex("\\<env\\:([a-zA-Z0-9\\-\\_]+)\\>");
   int pos = 0;
   while ((pos = regex.indexIn(value, pos)) != -1)
     {
@@ -359,7 +359,7 @@ QString ctkAppLauncherSettingsPrivate::expandPlaceHolders(const QString& value) 
 // --------------------------------------------------------------------------
 void ctkAppLauncherSettingsPrivate::expandEnvVars(const QStringList& envVarNames)
 {
-  QRegExp regex("\\<env\\:([a-zA-Z0-9\\-\\_]+)\\>");
+  QRegularExpression regex("\\<env\\:([a-zA-Z0-9\\-\\_]+)\\>");
 
   QHash<QString, QString> expanded = this->MapOfEnvVars;
 
