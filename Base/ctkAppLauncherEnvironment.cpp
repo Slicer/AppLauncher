@@ -1,9 +1,9 @@
-
 #include <ctkAppLauncherEnvironment.h>
 
 // Qt includes
 #include <QDebug>
 #include <QSet>
+#include <QRegularExpression>
 
 // STD includes
 #include <cstdlib>
@@ -75,12 +75,13 @@ QProcessEnvironment ctkAppLauncherEnvironment::environment(int requestedLevel)
   QStringList requestedEnvKeys;
   foreach(const QString& varname, currentEnvKeys)
     {
-    if (ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex.indexIn(varname) == 0)
+    QRegularExpressionMatch match = ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex.match(varname);
+    if (match.hasMatch() && match.capturedStart() == 0)
       {
-      int currentLevel = ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex.cap(1).toInt();
+      int currentLevel = match.captured(1).toInt();
       if (currentLevel == requestedLevel)
         {
-        QString currentVarName = QString(varname).remove(0, ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex.matchedLength());
+        QString currentVarName = QString(varname).remove(0, match.capturedLength(0));
         env.insert(currentVarName, currentEnv.value(varname));
         env.remove(varname);
         requestedEnvKeys.append(currentVarName);
@@ -207,15 +208,16 @@ QStringList ctkAppLauncherEnvironment::envKeys(const QProcessEnvironment& env)
 // --------------------------------------------------------------------------
 bool ctkAppLauncherEnvironment::isReservedVariableName(const QString& varname)
 {
+  QRegularExpressionMatch match = ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex.match(varname);
   return
-      ctkAppLauncherEnvironmentPrivate::LevelVarNameRegex.indexIn(varname) == 0
+      (match.hasMatch() && match.capturedStart() == 0)
       || varname == "APPLAUNCHER_LEVEL";
 }
 
 // --------------------------------------------------------------------------
 QString ctkAppLauncherEnvironment::casedVariableName(const QStringList& names, const QString& variableName)
 {
-  QRegularExpression rx(variableName, Qt::CaseInsensitive);
+  QRegularExpression rx(variableName, QRegularExpression::CaseInsensitiveOption);
   int index = names.indexOf(rx);
   if (index >= 0)
     {

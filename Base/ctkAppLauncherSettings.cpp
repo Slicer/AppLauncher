@@ -1,4 +1,3 @@
-
 // Qt includes
 #include <QApplication>
 #include <QDir>
@@ -7,6 +6,7 @@
 #include <QFileInfo>
 #include <QSet>
 #include <QSettings>
+#include <QRegularExpression>
 
 // CTK includes
 #include "ctkAppLauncherEnvironment.h"
@@ -315,12 +315,11 @@ QString ctkAppLauncherSettingsPrivate::expandValue(const QString& value) const
 
   // Consider environment expression
   QRegularExpression regex("\\<env\\:([a-zA-Z0-9\\-\\_]+)\\>");
-  int pos = 0;
-  while ((pos = regex.indexIn(value, pos)) != -1)
+  QRegularExpressionMatchIterator i = regex.globalMatch(value);
+  while (i.hasNext())
     {
-    pos += regex.matchedLength();
-    Q_ASSERT(regex.captureCount() == 1);
-    QString envVarName = regex.cap(1);
+    QRegularExpressionMatch match = i.next();
+    QString envVarName = match.captured(1);
     QString envVarValue = QString("<env-NOTFOUND:%1>").arg(envVarName);
     if (mapOfEnvVars.contains(envVarName))
       {
@@ -366,25 +365,21 @@ void ctkAppLauncherSettingsPrivate::expandEnvVars(const QStringList& envVarNames
   foreach(const QString& key, this->MapOfEnvVars.keys())
     {
     QString value = this->MapOfEnvVars[key];
-    int pos = 0;
-    int previousPos = pos;
-    while ((pos = regex.indexIn(value, pos)) != -1)
+    QRegularExpressionMatchIterator i = regex.globalMatch(value);
+    while (i.hasNext())
       {
-      pos += regex.matchedLength();
-      Q_ASSERT(regex.captureCount() == 1);
-      QString envVarName = regex.cap(1);
+      QRegularExpressionMatch match = i.next();
+      QString envVarName = match.captured(1);
       QString envVarValue = QString("<env:%1>").arg(envVarName);
       if (this->MapOfExpandedEnvVars.contains(envVarName))
         {
         envVarValue = this->MapOfExpandedEnvVars[envVarName];
         value.replace(QString("<env:%1>").arg(envVarName), envVarValue, Qt::CaseInsensitive);
-        pos = previousPos;
         }
       else if (expanded.contains(envVarName) && envVarName != key)
         {
         envVarValue = expanded[envVarName];
         value.replace(QString("<env:%1>").arg(envVarName), envVarValue, Qt::CaseInsensitive);
-        pos = previousPos;
         }
       else if (this->SystemEnvironment.contains(envVarName))
         {
@@ -394,7 +389,6 @@ void ctkAppLauncherSettingsPrivate::expandEnvVars(const QStringList& envVarNames
         {
         value = QString("<env-NOTFOUND:%1>").arg(envVarName);
         }
-      previousPos = pos;
       }
     expanded[key] = this->expandPlaceHolders(value);
     }

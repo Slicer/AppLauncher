@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QPointer>
+#include <QRegularExpression>
 
 // CTK includes
 #include "ctkCommandLineParser.h"
@@ -100,7 +101,7 @@ bool CommandLineParserArgumentDescription::addParameter(const QString& value)
     {
     // Validate value
     QRegularExpression regexp(this->RegularExpression);
-    if (!regexp.exactMatch(value))
+    if (!regexp.match(value).hasMatch())
       {
       return false;
       }
