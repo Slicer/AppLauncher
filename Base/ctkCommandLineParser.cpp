@@ -9,6 +9,7 @@
 #include <QSettings>
 #include <QPointer>
 #include <QRegularExpression>
+#include <QMetaType>
 
 // CTK includes
 #include "ctkCommandLineParser.h"
@@ -296,7 +297,24 @@ QHash<QString, QVariant> ctkCommandLineParser::parseArguments(const QStringList&
   foreach (CommandLineParserArgumentDescription* desc,
            this->Internal->ArgumentDescriptionList)
     {
-    desc->Value = QVariant(desc->ValueType);
+    switch (desc->ValueType)
+    {
+      case QMetaType::Bool:
+        desc->Value = QVariant(false); // Default value for bool is false
+        break;
+      case QMetaType::QString:
+        desc->Value = QVariant(""); // Default value for QString is ""
+        break;
+      case QMetaType::QStringList:
+        desc->Value = QVariant(QStringList()); // Default value for QStringList is empty list
+        break;
+      case QMetaType::Int:
+        desc->Value = QVariant(0); // Default value for Int is 0
+        break;
+      default:
+        desc->Value = QVariant();
+        break;
+    }
     if (desc->DefaultValue.isValid())
       {
       desc->Value = desc->DefaultValue;
