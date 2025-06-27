@@ -54,9 +54,9 @@ class QSettings;
  *   parser.enableSettings("disable-settings");
  *
  *   // Add command line argument names
- *   parser.addArgument("disable-settings", "", QVariant::Bool, "Do not use QSettings");
- *   parser.addArgument("help", "h", QVariant::Bool, "Show this help text");
- *   parser.addArgument("search-paths", "s", QVariant::StringList, "A list of paths to search");
+ *   parser.addArgument("disable-settings", "", QMetaType::Bool, "Do not use QSettings");
+ *   parser.addArgument("help", "h", QMetaType::Bool, "Show this help text");
+ *   parser.addArgument("search-paths", "s", QMetaType::QStringList, "A list of paths to search");
  *
  *   // Parse the command line arguments
  *   bool ok = false;
@@ -180,10 +180,10 @@ public:
    * <table>
    * <tr><td><b>Type</b></td><td><b># of parameters</b></td><td><b>Default regular expr</b></td>
    *        <td><b>Example</b></td></tr>
-   * <tr><td>QVariant::String</td><td>1</td><td>.*</td><td>--test-string StringParameter</td></tr>
-   * <tr><td>QVariant::Bool</td><td>0</td><td>does not apply</td><td>--enable-something</td></tr>
-   * <tr><td>QVariant::StringList</td><td>-1</td><td>.*</td><td>--test-list string1 string2</td></tr>
-   * <tr><td>QVariant::Int</td><td>1</td><td>-?[0-9]+</td><td>--test-int -5</td></tr>
+   * <tr><td>QMetaType::QString</td><td>1</td><td>.*</td><td>--test-string StringParameter</td></tr>
+   * <tr><td>QMetaType::Bool</td><td>0</td><td>does not apply</td><td>--enable-something</td></tr>
+   * <tr><td>QMetaType::QStringList</td><td>-1</td><td>.*</td><td>--test-list string1 string2</td></tr>
+   * <tr><td>QMetaType::Int</td><td>1</td><td>-?[0-9]+</td><td>--test-int -5</td></tr>
    * </table>
    *
    * The regular expressions are used to validate the parameters of command line
@@ -216,7 +216,7 @@ public:
    *         does not match <code>type</code>, a <code>std::logic_error</code> is thrown.
    */
   void addArgument(const QString& longarg, const QString& shortarg,
-                   QVariant::Type type, const QString& argHelp = QString(),
+                   QMetaType::Type type, const QString& argHelp = QString(),
                    const QVariant& defaultValue = QVariant(),
                    bool ignoreRest = false, bool deprecated = false);
 
@@ -284,7 +284,7 @@ public:
    * \code
    * ctkCommandLineParser parser;
    * parser.setArgumentPrefix("--", "-");
-   * parser.addArgument("long-argument", "l", QVariant::String);
+   * parser.addArgument("long-argument", "l", QMetaType::QString);
    * QStringList args;
    * args << "program name" << "--long-argument Hi";
    * parser.parseArguments(args);

@@ -903,7 +903,7 @@ void ctkAppLauncher::displayHelp(std::ostream &output)
     ctkAppLauncherPrivate::ExtraApplicationToLaunchProperty extraAppToLaunchProperty =
         d->ExtraApplicationToLaunchList[extraAppLongArgument];
     QString extraAppShortArgument = extraAppToLaunchProperty.value("shortArgument");
-    d->Parser.addArgument(extraAppLongArgument, extraAppShortArgument, QVariant::Bool,
+    d->Parser.addArgument(extraAppLongArgument, extraAppShortArgument, QMetaType::Bool,
                                        extraAppToLaunchProperty.value("help"));
     }
 
@@ -950,38 +950,38 @@ bool ctkAppLauncher::initialize(QString launcherFilePath)
   ctkCommandLineParser & parser = d->Parser;
   parser.setArgumentPrefix(d->LongArgPrefix, d->ShortArgPrefix);
 
-  parser.addArgument("launcher-help","", QVariant::Bool, "Display help");
-  parser.addArgument("launcher-version","", QVariant::Bool, "Show launcher version information");
-  parser.addArgument("launcher-verbose", "", QVariant::Bool, "Verbose mode");
-  parser.addArgument("launch", "", QVariant::String, "Specify the application to launch",
+  parser.addArgument("launcher-help","", QMetaType::Bool, "Display help");
+  parser.addArgument("launcher-version","", QMetaType::Bool, "Show launcher version information");
+  parser.addArgument("launcher-verbose", "", QMetaType::Bool, "Verbose mode");
+  parser.addArgument("launch", "", QMetaType::QString, "Specify the application to launch",
                      QVariant(d->DefaultApplicationToLaunch), true /*ignoreRest*/);
-  parser.addArgument("launcher-detach", "", QVariant::Bool,
+  parser.addArgument("launcher-detach", "", QMetaType::Bool,
                      "Launcher will NOT wait for the application to finish");
-  parser.addArgument("launcher-no-splash", "", QVariant::Bool,"Hide launcher splash");
-  parser.addArgument("launcher-timeout", "", QVariant::Int,
+  parser.addArgument("launcher-no-splash", "", QMetaType::Bool,"Hide launcher splash");
+  parser.addArgument("launcher-timeout", "", QMetaType::Int,
                      "Specify the time in second before the launcher kills the application. "
                      "-1 means no timeout", QVariant(-1));
   parser.setExactMatchRegularExpression("launcher-timeout",
                                         "(-1)|([0-9]+)", "-1 or a positive integer is expected.");
-  parser.addArgument("launcher-load-environment", "", QVariant::Int,
+  parser.addArgument("launcher-load-environment", "", QMetaType::Int,
                      "Specify the saved environment to load.");
   parser.setExactMatchRegularExpression("launcher-load-environment",
                                         "([0-9]+)", "a positive integer is expected.");
-  parser.addArgument("launcher-dump-environment", "", QVariant::Bool,
+  parser.addArgument("launcher-dump-environment", "", QMetaType::Bool,
                      "Launcher will print environment variables to be set, then exit");
-  parser.addArgument("launcher-show-set-environment-commands", "", QVariant::Bool,
+  parser.addArgument("launcher-show-set-environment-commands", "", QMetaType::Bool,
                      "Launcher will print commands suitable for setting the parent environment "
                      "(i.e. using 'eval' in a POSIX shell), then exit");
-  parser.addArgument("launcher-additional-settings", "", QVariant::String,
+  parser.addArgument("launcher-additional-settings", "", QMetaType::QString,
                      "Additional settings file to consider");
-  parser.addArgument("launcher-additional-settings-exclude-groups", "", QVariant::String,
+  parser.addArgument("launcher-additional-settings-exclude-groups", "", QMetaType::QString,
                      "Comma separated list of settings groups that should NOT be overwritten by values in User and Additional settings. "
                      "For example: General,Application,ExtraApplicationToLaunch");
-  parser.addArgument("launcher-ignore-user-additional-settings", "", QVariant::Bool,
+  parser.addArgument("launcher-ignore-user-additional-settings", "", QMetaType::Bool,
                      "Ignore additional user settings");
-  parser.addArgument("launcher-generate-exec-wrapper-script", "", QVariant::Bool,
+  parser.addArgument("launcher-generate-exec-wrapper-script", "", QMetaType::Bool,
                      "Generate executable wrapper script allowing to set the environment");
-  parser.addArgument("launcher-generate-template", "", QVariant::Bool,
+  parser.addArgument("launcher-generate-template", "", QMetaType::Bool,
                      "Generate an example of setting file");
 
   // TODO Should SplashImagePath and SplashScreenHideDelayMs be added as parameters ?
